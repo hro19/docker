@@ -1,0 +1,24 @@
+version: "2"
+services:
+  wordpress:
+    image: wordpress:latest
+    volumes:
+      - "$PWD:/var/www/html"
+      - "$PWD/.docker/backup:/tmp/backup"
+      - "$PWD/.docker/log:/tmp/log"
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: "db:3306"
+    env_file: .env
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - "db-data:/var/lib/mysql"
+    env_file: .env
+
+volumes:
+  db-data:
